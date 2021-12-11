@@ -7,94 +7,6 @@
 
 import Foundation
 
-struct LinkedList<T: Equatable> {
-    var head: Node<T>?
-    
-    mutating func add(node: Node<T>) {
-        // head node does not exist
-        if head == nil {
-            head = node
-            return
-        }
-        
-        // search for last node and attatch new
-        var now = head
-        while now?.next != nil {
-            now = now?.next
-        }
-        now?.next = node
-    }
-    
-    func searchNode(with data: T) -> Node<T>? {
-        var now = head
-        while now?.data != data && now != nil {
-            now = now?.next
-        }
-        return now
-    }
-    
-    mutating func insert(node: Node<T>, after id: Int) {
-        var now = head
-        while now?.id != id && now?.next != nil {
-            now = now?.next
-        }
-        
-        node.next = now?.next
-        now?.next = node
-    }
-    
-    mutating func insert(node: Node<T>, before id: Int) {
-        var now = head
-        
-        if now?.id == id {
-            head = node
-            node.next = now
-            return
-        }
-        
-        while now?.next?.id != id && now?.next != nil {
-            now = now?.next
-        }
-        
-        node.next = now?.next
-        now?.next = node
-    }
-    
-    mutating func delete(node: Node<T>) -> Bool {
-        var now = head
-        
-        // if target node is at head
-        if now === node {
-            self.head = now?.next
-            return true
-        }
-        
-        while now?.next !== node && now?.next != nil {
-            now = now?.next
-        }
-        
-        // no matching node to delete
-        if now == nil { return false }
-        
-        // delete node
-        now?.next = now?.next?.next
-        return true
-    }
-    
-    func showList() {
-        var now = head
-        print("===== Linked List ======")
-        while now != nil {
-            now?.next == nil
-            ? print("id: \(now?.id) | data: \(now?.data)")
-            : print("id: \(now?.id) | data: \(now?.data) -> ")
-            now = now?.next
-        }
-        print("========================")
-    }
-}
-
-
 var list = LinkedList<Int>()
 list.add(node: Node(id: 1, data: 0))
 list.add(node: Node(id: 2, data: 1))
@@ -127,3 +39,55 @@ list.showList()
 print("insert node before node with id (3)")
 list.insert(node: Node(id: 50, data: 3), before: 2)
 list.showList()
+
+//
+//search node with data 0
+//===== Linked List ======
+//id: Optional(1) | data: Optional(0) ->
+//id: Optional(2) | data: Optional(1) ->
+//id: Optional(3) | data: Optional(2) ->
+//id: Optional(4) | data: Optional(3) ->
+//id: Optional(5) | data: Optional(6) ->
+//id: Optional(6) | data: Optional(5) ->
+//id: Optional(7) | data: Optional(10)
+//========================
+//delete node with data 0
+//true
+//===== Linked List ======
+//id: Optional(2) | data: Optional(1) ->
+//id: Optional(3) | data: Optional(2) ->
+//id: Optional(4) | data: Optional(3) ->
+//id: Optional(5) | data: Optional(6) ->
+//id: Optional(6) | data: Optional(5) ->
+//id: Optional(7) | data: Optional(10)
+//========================
+//search node with data 0
+//nil
+//delete node with data 10
+//===== Linked List ======
+//id: Optional(2) | data: Optional(1) ->
+//id: Optional(3) | data: Optional(2) ->
+//id: Optional(4) | data: Optional(3) ->
+//id: Optional(5) | data: Optional(6) ->
+//id: Optional(6) | data: Optional(5)
+//========================
+//insert node after node with id(2)
+//===== Linked List ======
+//id: Optional(2) | data: Optional(1) ->
+//id: Optional(30) | data: Optional(2) ->
+//id: Optional(3) | data: Optional(2) ->
+//id: Optional(4) | data: Optional(3) ->
+//id: Optional(5) | data: Optional(6) ->
+//id: Optional(6) | data: Optional(5)
+//========================
+//insert node before node with id (3)
+//===== Linked List ======
+//id: Optional(50) | data: Optional(3) ->
+//id: Optional(2) | data: Optional(1) ->
+//id: Optional(30) | data: Optional(2) ->
+//id: Optional(3) | data: Optional(2) ->
+//id: Optional(4) | data: Optional(3) ->
+//id: Optional(5) | data: Optional(6) ->
+//id: Optional(6) | data: Optional(5)
+//========================
+//Program ended with exit code: 0
