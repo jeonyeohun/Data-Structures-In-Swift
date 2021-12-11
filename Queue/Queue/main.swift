@@ -29,6 +29,7 @@ struct Queue<T> {
     }
     
     mutating func pop() -> T? {
+        // O(1)아니고 O(N)임.. 링크드리스트나 포인터를 써보자.
         return queue.removeFirst()
     }
     
