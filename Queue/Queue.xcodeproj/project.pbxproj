@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B0047AFB2765D31C00CFB38A /* TwoPointerLinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0047AFA2765D31C00CFB38A /* TwoPointerLinkedList.swift */; };
+		B0047AFD2765D33000CFB38A /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0047AFC2765D33000CFB38A /* Node.swift */; };
+		B0047AFF2765D41900CFB38A /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0047AFE2765D41900CFB38A /* Queue.swift */; };
 		B0C31F7726BFF55100687C28 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C31F7626BFF55100687C28 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +26,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B0047AFA2765D31C00CFB38A /* TwoPointerLinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPointerLinkedList.swift; sourceTree = "<group>"; };
+		B0047AFC2765D33000CFB38A /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		B0047AFE2765D41900CFB38A /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		B0C31F7326BFF55100687C28 /* Queue */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Queue; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0C31F7626BFF55100687C28 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +64,9 @@
 			isa = PBXGroup;
 			children = (
 				B0C31F7626BFF55100687C28 /* main.swift */,
+				B0047AFA2765D31C00CFB38A /* TwoPointerLinkedList.swift */,
+				B0047AFC2765D33000CFB38A /* Node.swift */,
+				B0047AFE2765D41900CFB38A /* Queue.swift */,
 			);
 			path = Queue;
 			sourceTree = "<group>";
@@ -119,7 +128,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0047AFD2765D33000CFB38A /* Node.swift in Sources */,
 				B0C31F7726BFF55100687C28 /* main.swift in Sources */,
+				B0047AFB2765D31C00CFB38A /* TwoPointerLinkedList.swift in Sources */,
+				B0047AFF2765D41900CFB38A /* Queue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

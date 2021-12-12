@@ -7,33 +7,22 @@
 
 import Foundation
 
-struct Queue<T> {
-    var queue: [T] = []
-    
-    init(_ elements: [T]) {
-        queue = elements
-    }
-    
-    init(){}
-    
-    var count : Int {
-        return queue.count
-    }
-    
-    var isEmpty : Bool {
-        return queue.isEmpty
-    }
-    
-    mutating func clear () {
-        queue = []
-    }
-    
-    mutating func pop() -> T? {
-        // O(1)아니고 O(N)임.. 링크드리스트나 포인터를 써보자.
-        return queue.removeFirst()
-    }
-    
-    mutating func push(_ element: T) {
-        queue.append(element)
-    }
+var queue = Queue<Int>()
+
+for i in 0..<20 {
+    queue.push(i)
 }
+
+print(queue.count)
+
+while !queue.isEmpty {
+    print(queue.pop())
+}
+
+print(queue.count)
+
+for i in 0..<20 {
+    queue.push(i)
+}
+
+queue.clear()
