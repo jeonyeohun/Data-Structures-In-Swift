@@ -1,116 +1,84 @@
 //
-//  main.swift
+//  Heap.swift
 //  Heap
-//  Created by 전여훈 on 2021/07/25.
+//
+//  Created by 전여훈 on 2021/12/12.
 //
 
 import Foundation
 
-struct Heap<Element> {
-    var elements : [Element]
-    let sort : (Element, Element) -> Bool
+struct Heap<T: Comparable> {
+    private var elements: [T]
+    private let sortFunction: (T, T) -> Bool
     
-    var isEmpty : Bool {
-        return elements.isEmpty
+    var isEmpty: Bool {
+        return self.elements.isEmpty
+    }
+    var peek: T? {
+        return self.elements.first
+    }
+    var count: Int {
+        return self.elements.count
     }
     
-    var count : Int {
-        return elements.count
-    }
-    
-    init(elements: [Element] = [], sort: @escaping (Element, Element) -> Bool) {
+    init(elements: [T] = [], sortFunction: @escaping (T, T) -> Bool) {
         self.elements = elements
-        self.sort = sort
-        buildHeap()
+        self.sortFunction = sortFunction
+        if !elements.isEmpty {
+            self.buildHeap()
+        }
     }
     
-    // 마지막 리프노드의 부모노드부터 루트노드까지 diveDown을 수행한다.
+    func leftChild(of index: Int) -> Int {
+        return index * 2
+    }
+    func rightChild(of index: Int) -> Int {
+        return index * 2 + 1
+    }
+    func parent(of index: Int) -> Int {
+        return index / 2
+    }
+    mutating func add(element: T) {
+        self.elements.append(element)
+    }
+    mutating func diveDown(from index: Int) {
+        var higherPriority = index
+        let leftIndex = self.leftChild(of: index)
+        let rightIndex = self.rightChild(of: index)
+        
+        if leftIndex < self.elements.endIndex && self.sortFunction(self.elements[leftIndex], self.elements[higherPriority]) {
+            higherPriority = leftIndex
+        }
+        if rightIndex < self.elements.endIndex && self.sortFunction(self.elements[rightIndex], self.elements[higherPriority]) {
+            higherPriority = rightIndex
+        }
+        if higherPriority != index {
+            self.elements.swapAt(higherPriority, index)
+            self.diveDown(from: higherPriority)
+        }
+    }
+    mutating func swimUp(from index: Int) {
+        var index = index
+        while index >= 0 && self.sortFunction(self.elements[index], self.elements[index/2]) {
+            self.elements.swapAt(index/2, index)
+            index /= 2
+        }
+    }
     mutating func buildHeap() {
-        for index in (0..<(count / 2)).reversed() {
-            diveDown(from: index)
+        for index in (0...(self.elements.count / 2)).reversed() {
+            self.diveDown(from: index)
         }
     }
-    
-    func peek() -> Element? {
-        return elements.first
+    mutating func insert(node: T) {
+        self.elements.append(node)
+        self.swimUp(from: self.elements.endIndex - 1)
     }
-    
-    func isRoot(_ index: Int) -> Bool {
-        return index == 0
-    }
-    
-    func leftChildIndex(of index: Int) -> Int {
-        return (2 * index) + 1
-    }
-    
-    func rightChildIndex(of index: Int) -> Int {
-        return (2 * index) + 2
-    }
-    
-    func parentIndex(of index: Int) -> Int {
-        return (index - 1) / 2
-    }
-    
-    func isWithHigherPriority (at firstIdx: Int, than secondIdx: Int) -> Bool {
-        return sort(elements[firstIdx], elements[secondIdx])
-    }
-    
-    // 왼쪽 자녀노드가 있는 경우에는 부모노드와 비교하여 더 큰 노드의 인덳스를 반환하고, 없다면 부모노드의 인덱스르 반환한다.
-    func higherPriorityWithChild(parentIndex: Int, childIndex: Int) -> Int {
-        guard childIndex < count && isWithHigherPriority(at: childIndex, than: parentIndex) else {
-            return parentIndex
-        }
-        return childIndex
-    }
-    
-    // 왼쪽 자녀노드와 부모노드 중 우선순위가 더 큰 노드와 오른쪽 자녀노드를 비교히여 더 큰 노드의 인덱스를 반환한다.
-    func higherPriorityOfChildren(for parent: Int) -> Int {
-        return higherPriorityWithChild(
-            parentIndex: higherPriorityWithChild(parentIndex: parent,
-                                                 childIndex: leftChildIndex(of: parent)),
-            childIndex: rightChildIndex(of: parent))
-    }
-    
-    mutating func swapElement (at firstIndex: Int, with secondIndex: Int){
-        elements.swapAt(firstIndex, secondIndex)
-    }
-    
-    // 트리의 가장 마지막에 새로운 노드를 삽입하고 swimUp으로 트리를 재조정한다.
-    mutating func push (_ element: Element) {
-        elements.append(element)
-        swimUp(fromIndex: count - 1)
-    }
-    
-    // 지정된 인덱스부터 자신의 부모노드와 비교하면서 부모노드보다 우선순위가 높다면 두 노드를 교체한 뒤 새롭게 부모노드가 된 노드부터 swimUp을 다시 수행한다.
-    mutating func swimUp(fromIndex index: Int) {
-        let parentIdx = parentIndex(of: index)
-        guard !isRoot(index), isWithHigherPriority(at: index, than: parentIdx) else {
-            return
-        }
-        swapElement(at: index, with: parentIdx)
-        swimUp(fromIndex: parentIdx)
-    }
-    
-    // 루트노드의 내용을 마지막 리프노드의 내용과 교환한뒤 마지막 리프노드를 떼어버린다. 그리고 루트노드부터 diveDown을 수행하여 트리를 재조정한다.
-    mutating func pop() -> Element? {
-        guard !isEmpty else {
-            return nil
-        }
-        swapElement(at: 0, with: count - 1)
-        let removedElement = elements.removeLast()
-        if !isEmpty {
-            diveDown(from: 0)
-        }
-        return removedElement
-    }
-    
-    // 부모노드와 자녀노드를 비교하면서 자녀노드의 우선순위가 더 높다면 교환한다.
-    mutating func diveDown(from index: Int){
-        let childIndex = higherPriorityOfChildren(for: index)
-        if index == childIndex {
-            return
-        }
-        swapElement(at: index, with: childIndex)
-        diveDown(from: childIndex)
+    mutating func remove() -> T? {
+        if self.elements.isEmpty { return nil }
+        self.elements.swapAt(0, elements.endIndex - 1)
+        let deleted = elements.removeLast()
+        self.diveDown(from: 0)
+        
+        return deleted
     }
 }
