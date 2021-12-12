@@ -14,7 +14,7 @@ struct Heap<T: Comparable> {
     var isEmpty: Bool {
         return self.elements.isEmpty
     }
-    var peak: T? {
+    var peek: T? {
         return self.elements.first
     }
     var count: Int {
