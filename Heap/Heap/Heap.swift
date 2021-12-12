@@ -12,10 +12,13 @@ struct Heap<T: Comparable> {
     private let sortFunction: (T, T) -> Bool
     
     var isEmpty: Bool {
-        return elements.isEmpty
+        return self.elements.isEmpty
     }
     var peak: T? {
         return self.elements.first
+    }
+    var count: Int {
+        return self.elements.count
     }
     
     init(elements: [T] = [], sortFunction: @escaping (T, T) -> Bool) {
@@ -36,21 +39,21 @@ struct Heap<T: Comparable> {
         return index / 2
     }
     mutating func add(element: T) {
-        elements.append(element)
+        self.elements.append(element)
     }
     mutating func diveDown(from index: Int) {
         var higherPriority = index
         let leftIndex = self.leftChild(of: index)
         let rightIndex = self.rightChild(of: index)
         
-        if leftIndex < elements.endIndex && self.sortFunction(elements[leftIndex], elements[higherPriority]) {
+        if leftIndex < self.elements.endIndex && self.sortFunction(self.elements[leftIndex], self.elements[higherPriority]) {
             higherPriority = leftIndex
         }
-        if rightIndex < elements.endIndex && self.sortFunction(elements[rightIndex], elements[higherPriority]) {
+        if rightIndex < self.elements.endIndex && self.sortFunction(self.elements[rightIndex], self.elements[higherPriority]) {
             higherPriority = rightIndex
         }
         if higherPriority != index {
-            elements.swapAt(higherPriority, index)
+            self.elements.swapAt(higherPriority, index)
             self.diveDown(from: higherPriority)
         }
     }
