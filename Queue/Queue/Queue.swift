@@ -22,6 +22,12 @@ struct Queue<T> {
     var isEmpty : Bool {
         return list.head == nil
     }
+    var front: T? {
+        return list.front?.data
+    }
+    var back: T? {
+        return list.back?.data
+    }
     
     mutating func clear () {
         list.clear()

@@ -9,20 +9,19 @@ import Foundation
 
 struct LinkedList<T: Equatable> {
     var head: Node<T>?
+    var tail: Node<T>?
     
     mutating func add(node: Node<T>) {
         // head node does not exist
         if head == nil {
             head = node
+            tail = node
             return
         }
         
         // search for last node and attatch new
-        var now = head
-        while now?.next != nil {
-            now = now?.next
-        }
-        now?.next = node
+        tail?.next = node
+        tail = node
     }
     
     func searchNode(with data: T) -> Node<T>? {
@@ -61,10 +60,11 @@ struct LinkedList<T: Equatable> {
     }
     
     mutating func delete(node: Node<T>) -> Bool {
-        var now = head
+        var now = self.head
         
         // if target node is at head
         if now === node {
+            if self.head === self.tail { self.tail = nil }
             self.head = now?.next
             return true
         }
@@ -75,6 +75,10 @@ struct LinkedList<T: Equatable> {
         
         // no matching node to delete
         if now == nil { return false }
+        
+        if now?.next === tail {
+            tail = now
+        }
         
         // delete node
         now?.next = now?.next?.next

@@ -38,6 +38,9 @@ struct TwoPointerLinkedList<T> {
         self.head = head?.next
         self.count -= 1
         
+        if head == nil {
+            self.clear()
+        }
         return deleted
     }
     mutating func clear() {
