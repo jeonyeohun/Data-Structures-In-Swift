@@ -14,6 +14,15 @@ for id in 0..<30 {
 }
 
 list.showAll()
+
+print("insert node with id -1 before node with id 0")
+list.insert(node: Node(id: -1, data: 0), before: 0)
+list.showAll()
+
+print("insert node with id 100 before node with id 29")
+list.insert(node: Node(id: 100, data: 0), before: 29)
+list.showAll()
+
 print("\ncommand: reverse")
 list.reverse()
 list.showAll()
@@ -47,6 +56,9 @@ print("id: \(list.front?.id) data: \(list.front?.data)")
 
 print("node at back")
 print("id: \(list.back?.id) data: \(list.back?.data)")
+
+list.deleteNode(with: 29)
+list.showAll()
 
 //===== Linked List ======
 //id: 0 | data: 18 ->

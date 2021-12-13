@@ -41,10 +41,15 @@ struct DoublyLinkedList<T: Equatable> {
     
     mutating func deleteNode(with id: Int) -> Node<T>? {
         var now = self.head
-        while now?.id != id && now != nil {
-            now = now?.next
+        
+        if id == self.tail?.id {
+            now = self.tail
+        } else {
+            while now?.id != id && now != nil {
+                now = now?.next
+            }
         }
-
+        
         let deleted = now
         deleted?.next?.prev = deleted?.prev
         deleted?.prev?.next = deleted?.next
@@ -61,7 +66,12 @@ struct DoublyLinkedList<T: Equatable> {
     }
     
     mutating func insert(node: Node<T>, after id: Int) {
+        guard head != nil else { return }
         var now = self.head
+        if id == self.tail!.id {
+            self.add(node: node)
+        }
+        
         while now?.id != id && now != nil {
             now = now?.next
         }
@@ -75,13 +85,21 @@ struct DoublyLinkedList<T: Equatable> {
     }
     
     mutating func insert(node: Node<T>, before id: Int) {
+        guard head != nil else { return }
         var now = self.head
-        while now?.id != id && now != nil {
-            now = now?.next
+        
+        if id == self.tail?.id {
+            now = self.tail
+        } else {
+            while now?.id != id && now != nil {
+                now = now?.next
+            }
         }
+        
         if now === self.head {
             self.head = node
         }
+    
         now?.prev?.next = node
         node.prev = now?.prev
         now?.prev = node
