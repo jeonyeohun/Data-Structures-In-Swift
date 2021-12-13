@@ -8,35 +8,40 @@
 import Foundation
 
 struct Heap<T: Comparable> {
-    private var elements: [T]
+    private var elements: [T] = []
     private let sortFunction: (T, T) -> Bool
     
     var isEmpty: Bool {
-        return self.elements.isEmpty
+        return self.elements.count == 1
     }
     var peek: T? {
-        return self.elements.first
+        if self.isEmpty { return nil }
+        return self.elements.last!
     }
     var count: Int {
-        return self.elements.count
+        return self.elements.count - 1
     }
     
     init(elements: [T] = [], sortFunction: @escaping (T, T) -> Bool) {
-        self.elements = elements
-        self.sortFunction = sortFunction
         if !elements.isEmpty {
+            self.elements = [elements.first!] + elements
+        } else {
+            self.elements = elements
+        }
+        self.sortFunction = sortFunction
+        if elements.count > 1 {
             self.buildHeap()
         }
     }
     
     func leftChild(of index: Int) -> Int {
-        return index * 2
+        return index * 2 
     }
     func rightChild(of index: Int) -> Int {
         return index * 2 + 1
     }
     func parent(of index: Int) -> Int {
-        return index / 2
+        return (index) / 2
     }
     mutating func add(element: T) {
         self.elements.append(element)
@@ -59,25 +64,28 @@ struct Heap<T: Comparable> {
     }
     mutating func swimUp(from index: Int) {
         var index = index
-        while index >= 0 && self.sortFunction(self.elements[index], self.elements[index/2]) {
-            self.elements.swapAt(index/2, index)
-            index /= 2
+        while index != 1 && self.sortFunction(self.elements[index], self.elements[self.parent(of: index)]) {
+            self.elements.swapAt(index, self.parent(of: index))
+            index = self.parent(of: index)
         }
     }
     mutating func buildHeap() {
-        for index in (0...(self.elements.count / 2)).reversed() {
+        for index in (1...(self.elements.count / 2)).reversed() {
             self.diveDown(from: index)
         }
     }
     mutating func insert(node: T) {
+        if self.elements.isEmpty {
+            self.elements.append(node)
+        }
         self.elements.append(node)
         self.swimUp(from: self.elements.endIndex - 1)
     }
     mutating func remove() -> T? {
-        if self.elements.isEmpty { return nil }
-        self.elements.swapAt(0, elements.endIndex - 1)
+        if self.isEmpty { return nil }
+        self.elements.swapAt(1, elements.endIndex - 1)
         let deleted = elements.removeLast()
-        self.diveDown(from: 0)
+        self.diveDown(from: 1)
         
         return deleted
     }

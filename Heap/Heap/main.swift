@@ -9,7 +9,7 @@ import Foundation
 print("\n======Test Min Heap ======")
 var heap = Heap<Int>(sortFunction: <)
 
-for number in 0..<10 {
+for number in [0, 5, 4, 2, 1, 7, 9, 8, 3, 6] {
     heap.insert(node: number)
 }
 while !heap.isEmpty {
@@ -30,7 +30,7 @@ while !heap.isEmpty {
 print("\n======Test Max Heap ======")
 heap = Heap<Int>(sortFunction: >)
 
-for number in 0..<10 {
+for number in [0, 5, 4, 2, 1, 7, 9, 8, 3, 6] {
     heap.insert(node: number)
 }
 while !heap.isEmpty {
@@ -49,7 +49,7 @@ while !heap.isEmpty {
 //Optional(0)
 
 print("\n======Test Build Heap ======")
-heap = Heap<Int>(elements: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0], sortFunction: <)
+heap = Heap<Int>(elements: [0, 5, 4, 2, 1, 7, 9, 8, 3, 6], sortFunction: <)
 
 while !heap.isEmpty {
     print(heap.remove())
